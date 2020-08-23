@@ -1,0 +1,22 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  flex-flow: row;
+  border-bottom: 1px solid black;
+}
+nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+nav a {
+  padding: 5px;
+  color: darkcyan;
+  text-decoration: none;
+}
+
+nav a.active {
+  border-bottom: 1px solid darkcyan;
+  font-weight: 900;
+}

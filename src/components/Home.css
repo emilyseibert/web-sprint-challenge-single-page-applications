@@ -1,0 +1,23 @@
+.home {
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.pizzaHero {
+  background-image: url("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/delish-keto-pizza-073-1544039876.jpg");
+  background-size: cover;
+  width: 100%;
+  height: 400px;
+}
+
+.pizzaBtn {
+  width: 75px;
+  height: 40px;
+  background-color: black;
+  color: white;
+  border-radius: 3px;
+  margin-top: -20px;
+  font-size: 14px;
+}
+
