@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./PizzaForm.css";
 import axios from "axios";
+import * as yup from "yup";
 
 const PizzaForm = () => {
   const [form, setForm] = useState({
@@ -14,7 +15,53 @@ const PizzaForm = () => {
     special: "",
   });
 
+  const [errors, setErrors] = useState({
+    name: "",
+    size: "",
+    pepperoni: "",
+    green_peppers: "",
+    pineapple: "",
+    ham: "",
+    sausage: "",
+    special: "",
+  });
+
+  const [ableToSubmit, setAbleToSubmit] = useState(false);
+
+  const formSchema = yup.object().shape({
+    name: yup.string().length(2, "name isn't long enough"),
+    size: yup.string().oneOf(["xs", "s", "m", "l"], "Please select a size"),
+    pepperoni: yup.string(),
+    green_peppers: yup.string(),
+    pineapple: yup.string(),
+    ham: yup.string(),
+    sausage: yup.string(),
+    special: yup.string(),
+  });
+
+  const validateChange = (e) => {
+    yup
+      .reach(formSchema, e.target.name)
+      .validate(
+        e.target.type === "checkbox" ? e.target.checked : e.target.value
+      )
+      .then(() => {
+        setErrors({ ...errors, [e.target.name]: "" });
+      })
+      .catch((error) => {
+        setErrors({ ...errors, [e.target.name]: error.errors[0] });
+      });
+  };
+
+  useEffect(() => {
+    formSchema.isValid(form).then((isFormValid) => {
+      setAbleToSubmit(isFormValid);
+    });
+  }, [form]);
+
   const handleChange = (e) => {
+    e.persist();
+    validateChange(e);
     setForm({
       ...form,
       [e.target.name]:
@@ -28,6 +75,8 @@ const PizzaForm = () => {
       .post("https://reqres.in/api/users", form)
       .then((r) => console.log("submitted!", r));
   };
+
+  console.log("errors", errors);
   return (
     <form onSubmit={handleSubmit}>
       <label htmlFor="name">Name:</label>
@@ -39,6 +88,7 @@ const PizzaForm = () => {
         onChange={handleChange}
         placeholder="Enter name."
       />
+      {errors.name ? <span>{errors.name}</span> : null}
 
       <label htmlFor="size">Size:</label>
       <select id="size" name="size" value={form.size} onChange={handleChange}>
@@ -48,6 +98,7 @@ const PizzaForm = () => {
         <option value="m">Medium</option>
         <option value="l">Large</option>
       </select>
+      {errors.size ? <span>{errors.size}</span> : null}
 
       <label htmlFor="toppings">Toppings:</label>
       <div className="toppings">
@@ -106,7 +157,9 @@ const PizzaForm = () => {
         onChange={handleChange}
         placeholder="Enter special instructions"
       ></textarea>
-      <button type="submit">Add to Order</button>
+      <button type="submit" disabled={!ableToSubmit}>
+        Add to Order
+      </button>
     </form>
   );
 };
