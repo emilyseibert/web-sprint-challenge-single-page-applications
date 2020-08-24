@@ -1,0 +1,35 @@
+form {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+}
+
+label {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+.topping {
+  margin: 0;
+}
+
+input, select, textarea, button {
+  width: 150px;
+}
+
+input[type="checkbox"] {
+  width: auto;
+  margin-right: 5px;
+}
+
+.toppings {
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  margin-top: 20px;
+  background-color: darksalmon;
+  height: 40px;
+  border: none;
+  border-radius: 3px;
+}
